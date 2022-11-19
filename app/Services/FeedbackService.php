@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\BaseException;
 use App\Exceptions\NoFoundFeedbackException;
 use App\Models\Feedback;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -62,21 +63,29 @@ class FeedbackService
         return $entities;
     }
 
+    /**
+     * @param array $data
+     * @return Feedback
+     * @throws BaseException
+     */
     public function create(array $data): Feedback
     {
-        $this->model->fill($data);
-        $this->model->user_id = auth()->id();
-        $this->model->save();
+        try {
+            $this->model->fill($data);
+            $this->model->user_id = auth()->id();
+            $this->model->save();
+        } catch (\Throwable $exception) {
+            throw new BaseException($exception->getMessage());
+        }
 
         return $this->model;
     }
 
     /**
      * @param int $id
-     * @return Feedback
-     * @throws NoFoundFeedbackException
+     * @throws NoFoundFeedbackException|BaseException
      */
-    public function process(int $id): Feedback
+    public function process(int $id)
     {
         /** @var Feedback $feedback */
         $feedback = $this->model->with($this->getRelationList())
@@ -89,9 +98,11 @@ class FeedbackService
             throw new NoFoundFeedbackException(__('message.feedback.no_found'));
         }
 
-        $feedback->processed = true;
-        $feedback->update();
-
-        return $feedback;
+        try {
+            $feedback->processed = true;
+            $feedback->update();
+        } catch (\Throwable $exception) {
+            throw new BaseException($exception->getMessage());
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Http\Resources\FaultResponse;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
@@ -64,18 +65,19 @@ class Handler extends ExceptionHandler
     {
         return match (true) {
             $e instanceof NoFoundFeedbackException => $this->getNoFoundResponse($e),
+            $e instanceof BaseException => $this->getFaultResponse($e, $e->getCode()),
 
             default => parent::render($request, $e),
         };
     }
 
-    private function getFaultResponse(string $code, Throwable $e): JsonResponse
+    private function getFaultResponse(Throwable $e, string $code = SymfonyResponse::HTTP_BAD_GATEWAY): JsonResponse
     {
         return (new FaultResponse($e->getMessage()))->response()->setStatusCode($code);
     }
 
     private function getNoFoundResponse(Throwable $e): JsonResponse
     {
-        return $this->getFaultResponse(SymfonyResponse::HTTP_NOT_FOUND, $e);
+        return $this->getFaultResponse($e, SymfonyResponse::HTTP_NOT_FOUND);
     }
 }

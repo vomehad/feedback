@@ -2,9 +2,7 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
-class NoFoundFeedbackException extends Exception
+class NoFoundFeedbackException extends BaseException
 {
     //
 }

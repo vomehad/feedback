@@ -15,26 +15,26 @@
                 "tags": [
                     "Feedback"
                 ],
-                "summary": "Список заявки",
+                "summary": "Список отзывов",
                 "operationId": "feedbackAll",
                 "parameters": [
                     {
-                        "name": "status",
+                        "name": "processed",
                         "in": "query",
                         "description": "true | false",
                         "example": "true"
                     },
                     {
-                        "name": "type",
+                        "name": "deleted",
                         "in": "query",
                         "description": "true | false",
                         "example": "true"
                     },
                     {
-                        "name": "quarry",
+                        "name": "number",
                         "in": "query",
-                        "description": "true | false",
-                        "example": "true"
+                        "description": "number phone",
+                        "example": "99539393"
                     }
                 ],
                 "responses": {
@@ -53,6 +53,341 @@
                     },
                     "401": {
                         "description": "Неавторизован",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "Добавление отзыва",
+                "operationId": "clientFeedback",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FeedbackStoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Успешно создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибки валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultValidation"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизован",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/feedbacks/{id}": {
+            "get": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "Получить инфо отзыва",
+                "operationId": "getFeedback",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FeedbackItem"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизован",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "Удалить отзыв",
+                "operationId": "deleteFeedback",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешно удалён",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизован",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "Обновить инфо отзыва",
+                "operationId": "updateFeedback",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FeedbackUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешно обновлено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизован",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибки валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultValidation"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/feedbacks/{id}/restore": {
+            "post": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "Восстановить отзыв",
+                "operationId": "restoreFeedback",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешно восстановлен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизован",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/feedbacks/{id}/proessed": {
+            "post": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "Отметить обработанным отзыв",
+                "operationId": "proessedFeedback",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизован",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Не найден",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -89,6 +424,65 @@
                 },
                 "type": "object"
             },
+            "FeedbackStoreRequest": {
+                "title": "FeedbackCreateRequest",
+                "description": "Создание нового отзыва",
+                "required": [
+                    "name",
+                    "phone",
+                    "message"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Имя отзыва",
+                        "type": "string",
+                        "example": "Тест"
+                    },
+                    "phone": {
+                        "description": "Номер телефона",
+                        "type": "string",
+                        "example": "9955959595"
+                    },
+                    "message": {
+                        "description": "Сообщение",
+                        "type": "string",
+                        "example": "Тест"
+                    }
+                },
+                "type": "object"
+            },
+            "FeedbackUpdateRequest": {
+                "title": "FeedbackUpdateRequest",
+                "description": "Обновление отзыва",
+                "required": [
+                    "id",
+                    "name",
+                    "phone",
+                    "message"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Идентификатор отзыва",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Имя отзыва",
+                        "type": "string",
+                        "example": "Тест"
+                    },
+                    "phone": {
+                        "description": "Номер телефона",
+                        "type": "string",
+                        "example": "9955959595"
+                    },
+                    "message": {
+                        "description": "Сообщение",
+                        "type": "string",
+                        "example": "Тест"
+                    }
+                },
+                "type": "object"
+            },
             "JsonFaultResponse": {
                 "title": "falied",
                 "description": "Failed answer",
@@ -104,6 +498,58 @@
                     }
                 },
                 "type": "object"
+            },
+            "JsonFaultValidation": {
+                "title": "faliedValidation",
+                "description": "Массив сообщений об ошибках",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "example": false
+                    },
+                    "errors": {
+                        "type": "array",
+                        "format": "array",
+                        "items": {
+                            "properties": {
+                                "Название поля": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "Cообщение об ошибке"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "JsonResponse": {
+                "title": "success",
+                "description": "Success answer",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "example": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     },

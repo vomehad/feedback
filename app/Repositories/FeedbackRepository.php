@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\BaseException;
 use App\Exceptions\NoFoundFeedbackException;
 use App\Models\Feedback;
 
@@ -45,19 +46,44 @@ class FeedbackRepository
     }
 
     /**
+     * @param array $data
      * @param int $id
-     * @throws NoFoundFeedbackException
+     * @return Feedback
+     * @throws BaseException|NoFoundFeedbackException
      */
-    public function remove(int $id)
+    public function update(array $data, int $id): Feedback
     {
         $feedback = $this->getOne($id);
-        $feedback->delete();
+
+        try {
+            $feedback->fill($data);
+
+            $feedback->update();
+        } catch (\Throwable $exception) {
+            throw new BaseException($exception->getMessage());
+        }
+
+        return $feedback;
     }
 
     /**
      * @param int $id
-     * @return Feedback
-     * @throws NoFoundFeedbackException
+     * @throws NoFoundFeedbackException|BaseException
+     */
+    public function remove(int $id)
+    {
+        $feedback = $this->getOne($id);
+
+        try {
+            $feedback->delete();
+        } catch (\Throwable $exception) {
+            throw new BaseException($exception->getMessage());
+        }
+    }
+
+    /**
+     * @param int $id
+     * @throws NoFoundFeedbackException|BaseException
      */
     public function restore(int $id)
     {
@@ -68,8 +94,11 @@ class FeedbackRepository
             throw new NoFoundFeedbackException(__('message.feedback.no_found'));
         }
 
-        $feedback->deleted_at = null;
-
-        return $feedback;
+        try {
+            $feedback->deleted_at = null;
+            $feedback->update();
+        } catch (\Throwable $exception) {
+            throw new BaseException($exception->getMessage());
+        }
     }
 }

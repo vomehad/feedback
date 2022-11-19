@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FeedbackController;
 use Illuminate\Support\Facades\Route;
 
@@ -8,7 +9,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post('feedbacks/{id}/processed', [FeedbackController::class, 'processed'])->name('feedbacks.processed');
     Route::resource('feedbacks', FeedbackController::class)->except(['create', 'update']);
 
-    Route::get('logout');
+    Route::get('logout', [AuthController::class, 'logout']);
 });
 
-Route::post('login');
+Route::post('login', [AuthController::class, 'login']);
