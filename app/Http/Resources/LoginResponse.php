@@ -9,15 +9,6 @@ use JetBrains\PhpStorm\Pure;
 
 class LoginResponse extends JsonResource
 {
-    private bool $tempPass;
-
-    #[Pure]
-    public function __construct($resource, bool $tempPass = false)
-    {
-        parent::__construct($resource);
-        $this->tempPass = $tempPass;
-    }
-
     /**
      * Transform the resource into an array.
      *
@@ -27,14 +18,12 @@ class LoginResponse extends JsonResource
     #[ArrayShape([
         'success' => "bool",
         'token' => "string",
-        'tempPass' => "bool",
     ])]
     public function toArray($request): array
     {
         return [
             'success' => true,
             'token' => $this->resource,
-            'tempPass' => $this->tempPass,
         ];
     }
 }

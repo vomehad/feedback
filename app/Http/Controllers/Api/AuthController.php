@@ -70,7 +70,7 @@ class AuthController extends ApiController
                 ->setStatusCode(Response::HTTP_UNAUTHORIZED);
         }
 
-        $token = $this->model->createToken('')->plainTextToken;
+        $token = $user->createToken('')->plainTextToken;
 
         return (new LoginResponse($token))
             ->response()
