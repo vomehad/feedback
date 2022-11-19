@@ -10,6 +10,73 @@
         }
     ],
     "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Авторизоваться",
+                "operationId": "login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Авторизован",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonFaultResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "logout user",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JsonResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/feedbacks": {
             "get": {
                 "tags": [
@@ -542,6 +609,43 @@
                     }
                 },
                 "type": "object"
+            },
+            "LoginRequest": {
+                "title": "LoginRequest",
+                "description": "Авторизоваться в системе",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Email",
+                        "type": "string",
+                        "example": "admin@mail.test"
+                    },
+                    "password": {
+                        "description": "Пароль входа в систему",
+                        "type": "string",
+                        "example": "test"
+                    }
+                },
+                "type": "object"
+            },
+            "LoginResponse": {
+                "description": "Ответ авторизации",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "example": true
+                    },
+                    "token": {
+                        "description": "Bearer токен для авторизации",
+                        "type": "string",
+                        "format": "string"
+                    }
+                },
+                "type": "object"
             }
         },
         "securitySchemes": {
@@ -554,6 +658,9 @@
         }
     },
     "tags": [
+        {
+            "name": "Auth"
+        },
         {
             "name": "Feedback"
         }
