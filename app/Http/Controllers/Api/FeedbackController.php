@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\BaseException;
 use App\Exceptions\NoFoundFeedbackException;
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\CreateFeedbackRequest;
+use App\Http\Requests\FeedbackRequest;
 use App\Http\Requests\UpdateFeedbackRequest;
 use App\Http\Resources\FeedbackCollection;
 use App\Http\Resources\FeedbackResponse;
@@ -115,11 +115,11 @@ class FeedbackController extends ApiController
      *     ),
      * )
      *
-     * @param CreateFeedbackRequest $request
+     * @param FeedbackRequest $request
      * @return JsonResponse
      * @throws BaseException
      */
-    public function store(CreateFeedbackRequest $request): JsonResponse
+    public function store(FeedbackRequest $request): JsonResponse
     {
         $data = $request->validated();
 

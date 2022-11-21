@@ -15,7 +15,9 @@ class RussianPhoneRule implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        preg_match('/(\+?(7|8)\d{10})/', $value, $match);
+        $pattern = "/(\+?(7|8)\s?\(?\d{3}\)?\s?\d{3}(\s|-)?\d{2}(\s|-)?\d{2})/";
+        preg_match($pattern, $value, $match);
+
         if (empty($match[1])) {
             return false;
         }

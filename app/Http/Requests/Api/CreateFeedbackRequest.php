@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use App\Rules\RussianPhoneRule;
 use JetBrains\PhpStorm\ArrayShape;
 
-class UpdateFeedbackRequest extends ApiRequest
+class CreateFeedbackRequest extends ApiRequest
 {
     #[ArrayShape([
-        'id' => "int",
         'name' => "string",
         'phone' => "array",
         'message' => "string",
@@ -16,7 +15,6 @@ class UpdateFeedbackRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'id' => $this->getIdRules('feedbacks'),
             'name' => 'required|string|min:3|max:255',
             'phone' => [
                 'required',

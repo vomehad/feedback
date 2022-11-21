@@ -4,7 +4,7 @@
     @php
     /** @var App\Models\Feedback $model */
     @endphp
-    <form action="{{ route('feedbacks.store') }}" class="col-6 offset-2 border rounded" method="POST">
+    <form action="{{ route('web.store') }}" class="col-6 offset-2 border rounded" method="POST">
 
         @csrf
 
@@ -14,7 +14,7 @@
                    class="form-control @error('phone') border-danger @enderror"
                    name="phone"
                    id="phone"
-                   value=""
+                   value="{{ old('phone', $model->phone) }}"
                    placeholder="{{ __('message.placeholder.phone') }}"
             />
             @error('phone')
@@ -28,7 +28,7 @@
                    class="form-control @error('name') border-danger @enderror"
                    name="name"
                    id="name"
-                   value=""
+                   value="{{ old('name', $model->name) }}"
                    placeholder="{{ __('message.placeholder.name') }}"
             />
             @error('name')
@@ -45,7 +45,7 @@
                       id="message"
             >{{ old('message', $model->message) }}</textarea>
         </div>
-        @error('text')
+        @error('message')
         <div class="alert alert-danger">
             <span>{{ $message }}</span>
         </div>

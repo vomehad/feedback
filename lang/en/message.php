@@ -2,13 +2,17 @@
 
 return [
     'auth' => [
+        'error' => "failed to log in",
         'login' => "Authentication",
         'logout' => "Logout",
+        'success' => "Success",
     ],
     'errors' => [
         'phone' => 'Invalid number of phone',
     ],
     'feedback' => [
+        'error' => 'Error',
+        'saved' => 'Saved',
         'title' => 'Feedback',
     ],
     'label' => [
