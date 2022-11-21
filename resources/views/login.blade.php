@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', $title)
 @section('content')
-    <form action="{{ route('api.login') }}" class="col-6 offset-2 border rounded" method="POST">
+    <form action="{{ route('login') }}" class="col-6 offset-2 border rounded" method="POST">
 
         @csrf
 

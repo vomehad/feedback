@@ -7,25 +7,20 @@ use Illuminate\Contracts\Validation\Rule;
 class RussianPhoneRule implements Rule
 {
     /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Determine if the validation rule passes.
      *
      * @param  string  $attribute
      * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value)
+    public function passes($attribute, $value): bool
     {
-        //
+        preg_match('/(\+?(7|8)\d{10})/', $value, $match);
+        if (empty($match[1])) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -33,8 +28,8 @@ class RussianPhoneRule implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
-        return 'The validation error message.';
+        return __('message.errors.phone');
     }
 }

@@ -10,7 +10,7 @@
 
         <div class="form-group">
             <label for="phone" class="col-form-label-lg">{{ __('message.label.phone') }}</label>
-            <input type="number"
+            <input type="text"
                    class="form-control @error('phone') border-danger @enderror"
                    name="phone"
                    id="phone"
